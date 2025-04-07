@@ -5,11 +5,6 @@ using System.Text;
 
 namespace H9e.Tcp.Packet {
     public class FileTcpPacket : H9eTcpPacket {
-
-        static FileTcpPacket() {
-            RegisterPacket<FileTcpPacket>("file");
-        }
-
         public FileTcpPacket() : base("file") {
 
         }
