@@ -1,55 +1,55 @@
-# `H9e` ÏîÄ¿ÎÄµµ
-## ¸ÅÊö
-`H9e` ÊÇÒ»¸öÓÃÓÚC#¿ì½İ¿ª·¢µÄÀà¿â,°üº¬TcpĞ­Òé,Http¿Í»§¶Ë,DatabaseµÈ¹¦ÄÜ,¿ÉÒÔ¿ìËÙ¿ª·¢Ò»Ğ©³£ÓÃµÄ¹¦ÄÜ,ÈçÅÀ³æ,Êı¾İ·ÖÎöµÈ.
-- `H9e.Core` Ö÷ÒªÓÃÓÚÒ»Ğ©³£ÓÃµÄ¹¦ÄÜ
-- `H9e.HttpClient` Ö÷ÒªÓÃÓÚHttpĞ­ÒéµÄ¿ìËÙ¿ª·¢
-- `H9e.Tcp` Ö÷ÒªÓÃÓÚTCPĞ­ÒéµÄ¿ìËÙ¿ª·¢
-- `H9e.ProcessModule` Ö÷ÒªÓÃÓÚ½ø³ÌÄ£¿éµÄ¿ìËÙ¿ª·¢
+ï»¿# `H9e` é¡¹ç›®æ–‡æ¡£
+## æ¦‚è¿°
+`H9e` æ˜¯ä¸€ä¸ªç”¨äºC#å¿«æ·å¼€å‘çš„ç±»åº“,åŒ…å«Tcpåè®®,Httpå®¢æˆ·ç«¯,Databaseç­‰åŠŸèƒ½,å¯ä»¥å¿«é€Ÿå¼€å‘ä¸€äº›å¸¸ç”¨çš„åŠŸèƒ½,å¦‚çˆ¬è™«,æ•°æ®åˆ†æç­‰.
+- `H9e.Core` ä¸»è¦ç”¨äºä¸€äº›å¸¸ç”¨çš„åŠŸèƒ½
+- `H9e.HttpClient` ä¸»è¦ç”¨äºHttpåè®®çš„å¿«é€Ÿå¼€å‘
+- `H9e.Tcp` ä¸»è¦ç”¨äºTCPåè®®çš„å¿«é€Ÿå¼€å‘
+- `H9e.ProcessModule` ä¸»è¦ç”¨äºè¿›ç¨‹æ¨¡å—çš„å¿«é€Ÿå¼€å‘
 
 
-## `H9e.Tcp` Ê¹ÓÃÎÄµµ
-### 1. ³õÊ¼»¯
+## `H9e.Tcp` ä½¿ç”¨æ–‡æ¡£
+### 1. åˆå§‹åŒ–
 ```csharp
-//³õÊ¼»¯
+//åˆå§‹åŒ–
 H9eTcpUtils.Init();
-//¶Ô°ü½øĞĞ×¢²á
-H9eTcpPacket.RegisterPacket<T>("¶ÔÓ¦µÄTag");
-//ÀıÈç
+//å¯¹åŒ…è¿›è¡Œæ³¨å†Œ
+H9eTcpPacket.RegisterPacket<T>("å¯¹åº”çš„Tag");
+//ä¾‹å¦‚
 H9eTcpPacket.RegisterPacket<FileTcpPacket>("file");
 ```
-### 2.´´½¨·şÎñÆ÷
+### 2.åˆ›å»ºæœåŠ¡å™¨
 ```csharp
-//´´½¨·şÎñÆ÷
+//åˆ›å»ºæœåŠ¡å™¨
 H9eTcpServer server = new H9eTcpServer(port);
-//ÉèÖÃ·şÎñÆ÷µÄ»Øµ÷º¯Êı
+//è®¾ç½®æœåŠ¡å™¨çš„å›è°ƒå‡½æ•°
 server.OnPacketMessage += (client, packet) => {
-	//´¦Àí½ÓÊÕµ½µÄ°ü
+	//å¤„ç†æ¥æ”¶åˆ°çš„åŒ…
 	if (packet is FileTcpPacket filePacket)
 	{
-		//´¦ÀíÎÄ¼ş°ü
-		filePacket.SaveFile("ÎÄ¼ş±£´æÂ·¾¶");
+		//å¤„ç†æ–‡ä»¶åŒ…
+		filePacket.SaveFile("æ–‡ä»¶ä¿å­˜è·¯å¾„");
 	}
 };
-//Æô¶¯·şÎñÆ÷
+//å¯åŠ¨æœåŠ¡å™¨
 server.Start(backlog);
 ```
-### 3.´´½¨¿Í»§¶Ë
+### 3.åˆ›å»ºå®¢æˆ·ç«¯
 ```csharp
-//´´½¨¿Í»§¶Ë
+//åˆ›å»ºå®¢æˆ·ç«¯
 H9eTcpClient client = new H9eTcpClient(ip, port);
-//½ÓÊÕ°ü
+//æ¥æ”¶åŒ…
 client.OnPacketMessage += (client, packet) => {
-	//´¦Àí½ÓÊÕµ½µÄ°ü
+	//å¤„ç†æ¥æ”¶åˆ°çš„åŒ…
 	if (packet is FileTcpPacket filePacket)
 	{
-		//´¦ÀíÎÄ¼ş°ü
-		filePacket.SaveFile("ÎÄ¼ş±£´æÂ·¾¶");
+		//å¤„ç†æ–‡ä»¶åŒ…
+		filePacket.SaveFile("æ–‡ä»¶ä¿å­˜è·¯å¾„");
 	}
 };
-//Á¬½Ó·şÎñÆ÷
+//è¿æ¥æœåŠ¡å™¨
 client.Connect();
-//×Ô¶¯ÖØÁ¬
+//è‡ªåŠ¨é‡è¿
 client.AutoConnect();
-//·¢ËÍ°ü
-client.Send(FileTcpPacket.Create("ÎÄ¼şÂ·¾¶"));
+//å‘é€åŒ…
+client.Send(FileTcpPacket.Create("æ–‡ä»¶è·¯å¾„"));
 ```
