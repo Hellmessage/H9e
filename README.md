@@ -6,6 +6,18 @@
 - `H9e.Tcp` 主要用于TCP协议的快速开发
 - `H9e.ProcessModule` 主要用于进程模块的快速开发
 
+---
+
+## `H9e.HttpClient` 使用文档
+### 1. H9eHttpClient
+```csharp
+//创建HttpClient
+H9eHttpClient client = new H9eHttpClient();
+//设置请求头
+client.SetHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3");
+client.Get("http://www.example.com");
+```
+---
 
 ## `H9e.Tcp` 使用文档
 ### 1. 初始化
@@ -53,3 +65,7 @@ client.AutoConnect();
 //发送包
 client.Send(FileTcpPacket.Create("文件路径"));
 ```
+
+---
+
+## `H9e.Core` 使用文档

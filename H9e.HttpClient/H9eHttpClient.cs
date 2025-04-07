@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Authentication;
@@ -11,6 +12,13 @@ using System.Threading.Tasks;
 namespace H9e.HttpClient {
 
     public class H9eHttpClient {
+
+        static H9eHttpClient() {
+            ServicePointManager.Expect100Continue = false;
+            ServicePointManager.DefaultConnectionLimit = 512;
+            ServicePointManager.UseNagleAlgorithm = false;
+        }
+
         private readonly static List<int> RedirectCode = new List<int> { 301, 302, 307 };
         public static bool IsDebug { get; set; } = false;
         public static bool IsSaveLog { get; set; } = false;
