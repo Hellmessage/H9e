@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Platforms>AnyCPU;x64;x86</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\H9e.Core\H9e.Core.csproj" />
+    <ProjectReference Include="..\..\H9e.HttpClient\H9e.HttpClient.csproj" />
+    <ProjectReference Include="..\..\H9e.ProcessModule\H9e.ProcessModule.csproj" />
+    <ProjectReference Include="..\..\H9e.Tcp\H9e.Tcp.csproj" />
+  </ItemGroup>
+
+</Project>
