@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Security;
@@ -168,10 +169,6 @@ namespace H9e.HttpClient {
 
         public H9eHttpMessage Options(string url, H9eHeaderManage header = null, int timeout = 20000, bool readBody = true, bool redirect = true) {
             return Request("OPTIONS", url, null, header, timeout, readBody, redirect).Result;
-        }
-
-        public H9eHttpMessage Trace(string url, H9eHeaderManage header = null, int timeout = 20000, bool readBody = true, bool redirect = true) {
-            return Request("TRACE", url, null, header, timeout, readBody, redirect).Result;
         }
 
         public H9eHttpMessage Connect(string url, H9eHeaderManage header = null, int timeout = 20000, bool readBody = true, bool redirect = true) {
@@ -528,6 +525,55 @@ namespace H9e.HttpClient {
 
         #endregion
 
+        #region 构建默认模版
+        private class ClientConfig {
+
+            #region UserArgent相关
+            public readonly static List<string> ChromiumVersionList = H9eChromiumTagList.GetTagListGt(113);
+            public void RandomUserArgent() {
+                Random random = new Random();
+                int index = random.Next(0, ChromiumVersionList.Count);
+                string version = ChromiumVersionList[index];
+                string ua = $"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{version.Split('.')[0]}.0.0.0 Safari/537.36";
+                UserArgent = ua;
+            }
+
+            private string _userArgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36";
+            public string UserArgent {
+                get {
+                    return _userArgent;
+                }
+                set {
+                    _userArgent = value;
+                    BrowserVersion = _userArgent.Split(new string[] { "Chrome/" }, StringSplitOptions.RemoveEmptyEntries)[1].Split('.')[0];
+                    UserArgentVersion = "5.0 " + _userArgent.Split(new string[] { "/5.0 " }, StringSplitOptions.RemoveEmptyEntries)[1];
+                }
+            }
+            public string BrowserVersion { get; set; } = "134";
+            public string UserArgentVersion { get; set; } = "5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36";
+            public string BrowserPlatform { get; set; } = "Win32";
+            #endregion
+        }
+
+        public static H9eHttpClient BuildDefaultClient() {
+            ClientConfig config = new ClientConfig();
+            config.RandomUserArgent();
+            H9eHttpClient Http = new H9eHttpClient();
+            Http.SetHeader(H9eHttpHeader.UserAgent, config.UserArgent);
+            Http.SetHeader(H9eHttpHeader.SecCHUA, $"\"Chromium\";v=\"{config.BrowserVersion}\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"{config.BrowserVersion}\"");
+            Http.SetHeader(H9eHttpHeader.SecCHUAPlatform, "\"Windows\"");
+            Http.SetHeader(H9eHttpHeader.SecCHUAMobile, "?0");
+            Http.SetHeader(H9eHttpHeader.Pragma, "no-cache");
+            Http.SetHeader(H9eHttpHeader.CacheControl, "no-cache");
+            Http.SetHeader(H9eHttpHeader.SecFetchSite, "same-site");
+            Http.SetHeader(H9eHttpHeader.SecFetchMode, "cors");
+            Http.SetHeader(H9eHttpHeader.SecFetchDest, "empty");
+            Http.SetHeader(H9eHttpHeader.AcceptEncoding, "deflate");
+            Http.SetHeader(H9eHttpHeader.AcceptLanguage, "en-US,en;q=0.9");
+            Http.SetHeader(H9eHttpHeader.Priority, "u=1, i");
+            return Http;
+        }
+        #endregion
 
         public void SaveLoggerToFile(string file) {
             try {
@@ -544,6 +590,8 @@ namespace H9e.HttpClient {
             if (IsDebug) {
                 Console.WriteLine("------------------------------------------------------------");
                 Console.WriteLine(string.Join("\r\n", argv));
+                Trace.WriteLine("------------------------------------------------------------");
+                Trace.WriteLine(string.Join("\r\n", argv));
             }
         }
     }
